@@ -4,18 +4,6 @@
 # freeciv_segfauls_fix is a workaround some segfaults in the Freeciv server. Freeciv bug #23884.
 # message_escape is a patch for protecting against script injection in the message texts.
 # tutorial_ruleset changes the ruleset of the tutorial to one supported by Freeciv-web.
-# MapMoveCostInline is backport of Freeciv patch #6934 (SVN r31886)
-# fragement is comment changes like SVN r31952, included here just to provide baseline that
-#     other patches apply directly to
-# Remove-redundant-canceled-orders-notification is Freeciv bug #24414 (SVN r31956)
-# metamessage_setting is Freeciv bug #24415 (SVN r31961)
-# settings_access_level_metamessage is replaced by Freeciv patch #6967 (SVN r31962)
-# AllowIextraInBetween is Freeciv bug #24395 (SVN r31970)
-# GenericPacketsGen24421 is json protocol change, backported from Freeciv bug #24421 (SVN r31996)
-# WarningsBase fixes compiler warnings from the code that gets properly replaced by GenericPacketsGen24421
-# ArrayDimensions is json protocol change, backported from Freeciv bug #24419 (SVN r32001)
-# InlineGenlistNavigation is backport of Freeciv patch #6992 (SVN r32006)
-# libtoolize_no_symlinks will get obsolete by Freeciv patch #7001 (SVN r32156)
 # FairResourceExtra1 is Freeciv bug #24533 (SVN r32262)
 # SaveInvalidResource is Freeciv bug #24534 (SVN r32263)
 # FairResourceExtra2 is Freeciv bug #24537 (SVN r32268)
@@ -30,12 +18,15 @@
 #               for the fact that freeciv-web specific part of the packet_city_info
 #               is in a new packet. Also receiving web-client side needs changes
 # BuildingCrucial is backport of Freeciv bug #24526 (SVN r32955)
+# MetaconnectionPersistent is Freeciv patch #7300 (SVN r32991) implementing persistent metaserver connections.
+# navajo-remove-long-city-names is a quick-fix to remove city names which would be longer than MAX_LEN_NAME
+#     when the name is url encoded in json protocol.
+#     MAX_LEN_CITYNAME gets increased in patch #7305 (SVN r33048)
 # win_chance includes 'Chance to win' in Freeciv-web map tile popup.
+# fcweb_scorelog is Freeciv patch #7313 (SVN r33062)
 # disable_global_warming is Freeciv bug #24418
-# navajo-remove-long-city-names is a quick-fix to remove city names which would be longer than MAX_LEN_NAME when the name is url encoded in json protocol. A possibly better solution is to increase MAX_LEN_NAME.
-# MetaconnectionPersistent is Freeciv patch #7300 implementing persistent metaserver connections.
 
-PATCHLIST="WarningsBase freeciv_web_packets_def_changes city_fixes city_impr_fix2 city-naming-change city_fixes2 metachange text_fixes unithand-change2 current_research_cost freeciv-svn-webclient-changes init_lists_disable goto_fcweb misc_devversion_sync tutorial_ruleset savegame maphand_ch serverside_extra_assign libtoolize_no_symlinks ai_traits_crash worklists server_password barbarian-names activity_null_check add_rulesets message_escape freeciv_segfauls_fix scorelog_filenames scorelog_set_to_client settings_access_level_metamessage metamessage_setting disable_global_warming fragement GenericPacketsGen24421 ArrayDimensions CommentLineOfItsOwn Remove-redundant-canceled-orders-notification win_chance ScorefileWeb MapMoveCostInline AllowIextraInBetween CardinalityCheckOnDemand ClassBonusRoadsCache InlineGenlistNavigation TileExtrasSafe NoNonnull SaveInvalidResource FairResourceExtra1 FairResourceExtra2 BuildingCrucial navajo-remove-long-city-names MetaconnectionPersistent"
+PATCHLIST="freeciv_web_packets_def_changes city_fixes city_impr_fix2 city-naming-change city_fixes2 metachange text_fixes unithand-change2 current_research_cost freeciv-svn-webclient-changes init_lists_disable goto_fcweb misc_devversion_sync tutorial_ruleset savegame maphand_ch serverside_extra_assign ai_traits_crash worklists server_password barbarian-names activity_null_check add_rulesets message_escape freeciv_segfauls_fix scorelog_filenames fcweb_scorelog disable_global_warming CommentLineOfItsOwn win_chance ScorefileWeb CardinalityCheckOnDemand ClassBonusRoadsCache TileExtrasSafe NoNonnull SaveInvalidResource FairResourceExtra1 FairResourceExtra2 BuildingCrucial navajo-remove-long-city-names MetaconnectionPersistent"
 
 apply_patch() {
   echo "*** Applying $1.patch ***"

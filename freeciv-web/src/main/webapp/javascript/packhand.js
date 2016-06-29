@@ -315,6 +315,14 @@ function handle_game_info(packet)
   game_info = packet;
 }
 
+/**************************************************************************
+  Handle the calendar info packet.
+**************************************************************************/
+function handle_calendar_info(packet)
+{
+  calendar_info = packet;
+}
+
 /* 30% complete */
 function handle_start_phase(packet)
 {
@@ -670,6 +678,22 @@ function handle_unit_actions(packet)
     });
   }
 
+  if (disturb_player) {
+    /* Clear the unit's action_decision_want. This was the reply to a
+     * foreground request caused by it. Freeciv-web doesn't save open
+     * action selection dialogs. It doesn't even wait for any other action
+     * selection dialog to be answered before requesting data for the next
+     * one. This lack of a queue allows it to be cleared here. */
+
+    var unqueue = {
+      "pid"     : packet_unit_sscs_set,
+      "unit_id" : actor_unit_id,
+      "type"    : USSDT_UNQUEUE,
+      "value"   : IDENTITY_NUMBER_ZERO
+    };
+    send_request(JSON.stringify(unqueue));
+  }
+
   if (hasActions && disturb_player) {
     popup_action_selection(pdiplomat, action_probabilities,
                            ptile, target_unit, target_city);
@@ -993,6 +1017,14 @@ function handle_ruleset_unit_flag(packet)
   /* TODO: implement */
 }
 
+/***************************************************************************
+  Packet ruleset_unit_class_flag handler.
+***************************************************************************/
+function handle_ruleset_unit_class_flag(packet)
+{
+  /* TODO: implement */
+}
+
 function handle_ruleset_unit_bonus(packet)
 {
   /* TODO: implement */
@@ -1013,7 +1045,18 @@ function handle_scenario_info(packet)
 {
   scenario_info = packet;
 
-  /* This changes the game information. */
+  /* Don't call update_game_info_pregame() yet. Wait for the scenario
+   * description. */
+}
+
+/**************************************************************************
+  Receive scenario description of the current scenario.
+**************************************************************************/
+function handle_scenario_description(packet)
+{
+  scenario_info['description'] = packet['description'];
+
+  /* Show the updated game information. */
   update_game_info_pregame();
 }
 
@@ -1142,6 +1185,14 @@ function handle_ruleset_extra(packet)
 {
   extras[packet['id']] = packet;
   extras[packet['name']] = packet;
+}
+
+/**************************************************************************
+  Packet ruleset_extra_flag handler.
+**************************************************************************/
+function handle_ruleset_extra_flag(packet)
+{
+  /* TODO: implement */
 }
 
 function handle_ruleset_base(packet)

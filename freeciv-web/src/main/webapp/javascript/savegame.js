@@ -470,10 +470,14 @@ function show_scenario_dialog()
                                   show_map_from_image_dialog();
                                 },
 	  			"Select scenario": function() {
-					scenario_activated = true;
-					load_game_check();
-					$("#dialog").dialog('close');
-					$("#game_text_input").blur();
+	  			    if ($('#selectable .ui-selected').index() == -1) {
+	  			        swal("Please select a scenario first.");
+	  			    } else {
+                        scenario_activated = true;
+                        load_game_check();
+                        $("#dialog").dialog('close');
+                        $("#game_text_input").blur();
+					}
 				}
 			}
 		});

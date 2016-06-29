@@ -14,6 +14,13 @@ description="Experimental web-client game rules for Freeciv"
 options="+Freeciv-ruleset-Devel-2015.January.14 web-compatible"
 format_version=10
 
+; This section contains meta information for freeciv-ruledit to recreate the ruleset
+; file in a form wanted. These have no in-game effect whatsoever
+[ruledit]
+
+; Which file to read description in from.
+;description_file = ""
+
 [about]
 ; Ruleset name
 name = _("Webperimental")
@@ -48,6 +55,7 @@ before contact.\n\
 - It is possible to establish an embassy while inside a ship.\n\
 - The Leader unit can destroy a domestic city. (Be careful when you scorch \
 the earth. If your Leader dies you lose he game.)\n\
+- Labels the year using AD/BC.\n\
 \n\
 This ruleset is still in development. If playing it makes you think that \
 a rule should change go to the Freeciv-web board at \
@@ -56,6 +64,7 @@ webperimental ruleset feed back and suggestion thread.\
 ")
 
 ; Detailed description
+; When updating this, update also desciption_file in [ruledit] section to match
 ; description = ""
 
 [options]
@@ -291,6 +300,18 @@ ui_name_home_city = _("Set %sHome City%s")
 
 ; /* TRANS: _Upgrade Unit (100% chance of success). */
 ui_upgrade_unit = _("%sUpgrade Unit%s")
+
+; /* TRANS: Drop _Paratrooper (100% chance of success). */
+ui_paradrop_unit = _("Drop %sParatrooper%s")
+
+; /* TRANS: _Airlift to City (100% chance of success). */
+ui_airlift_unit = _("%sAirlift to City%s")
+
+; Suppress automatic help text generation about what enables and/or
+; disables the following actions.
+;
+; Can make the help text less redundant when you document it your self.
+;quiet_actions = "Targeted Sabotage City", "Targeted Steal Tech"
 
 ; /* <-- avoid gettext warnings
 ;
@@ -639,11 +660,27 @@ actor_reqs    =
 action = "Home City"
 actor_reqs    =
     { "type",   "name", "range", "present"
+      "UnitState", "HasHomeCity", "Local", TRUE
       "DiplRel", "Is foreign", "Local", FALSE
+    }
+
+[actionenabler_paradrop]
+action = "Paradrop Unit"
+actor_reqs    =
+    { "type",   "name", "range"
+      "UnitFlag", "Paratroopers", "Local"
     }
 
 [actionenabler_upgrade_unit]
 action = "Upgrade Unit"
+
+[actionenabler_airlift_unit]
+action = "Airlift Unit"
+actor_reqs    =
+    { "type",          "name",        "range"
+      "UnitClassFlag", "Airliftable", "Local"
+      "MinMoveFrags",  "1",           "Local"
+    }
 
 [borders]
 ; Base border radius from city.
@@ -744,10 +781,10 @@ fragments = 0
 ; ...
 
 ; What labels are used for positive and negative years.
-; /* TRANS: year label (Common Era) */
-positive_label = _("CE")
-; /* TRANS: year label (Before Common Era) */
-negative_label = _("BCE")
+; /* TRANS: year label (Anno Domini) */
+positive_label = _("AD")
+; /* TRANS: year label (Before Christ) */
+negative_label = _("BC")
 
 ; /* <-- avoid gettext warnings
 ;

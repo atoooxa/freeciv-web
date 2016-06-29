@@ -72,7 +72,9 @@ var ACTION_RECYCLE_UNIT = 23;
 var ACTION_DISBAND_UNIT = 24;
 var ACTION_HOME_CITY = 25;
 var ACTION_UPGRADE_UNIT = 26;
-var ACTION_COUNT = 27;
+var ACTION_PARADROP = 27;
+var ACTION_AIRLIFT = 28;
+var ACTION_COUNT = 29;
 
 /* The action_decision enum */
 var ACT_DEC_NOTHING = 0;
@@ -99,7 +101,7 @@ var VUT_TERRAINCLASS = 14;	/* More generic terrain type, currently "Land" or "Oc
 var VUT_MINYEAR = 15;
 var VUT_TERRAINALTER = 16;      /* Terrain alterations that are possible */
 var VUT_CITYTILE = 17;          /* Target tile is used by city. */
-var VUT_RESERVED_1 = 18;
+var VUT_GOOD = 18;
 var VUT_TERRFLAG = 19;
 var VUT_NATIONALITY = 20;
 var VUT_BASEFLAG = 21;
@@ -121,7 +123,8 @@ var VUT_TOPO = 36;
 var VUT_IMPR_GENUS = 37;
 var VUT_ACTION = 38;
 var VUT_MINTECHS = 39;
-var VUT_COUNT = 40;             /* Keep this last. */
+var VUT_EXTRAFLAG = 40;
+var VUT_COUNT = 41;             /* Keep this last. */
 
 /* Sometimes we don't know (or don't care) if some requirements for effect
  * are currently fulfilled or not. This enum tells lower level functions

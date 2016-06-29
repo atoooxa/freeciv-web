@@ -17,14 +17,25 @@ format_version=10
 
 [control]
 ; Names for custom terrain flags. There can be up to 8 of these.
-; name          = rule name; not translateable, but may be displayed in
-;                 some circumstances
+; name          = rule name; In some circumstances user may see this
+;                 as part of some sentences, so try to make it descriptive
+;                 and sensible.
 ; helptxt       = displayed in the help for terrains with this flag (optional)
 flags =
   { "name", "helptxt"
     _("Oil"), _("Has Oil Well instead of Mine.")
     _("NoPollution"), _("No Pollution nor Fallout appear here.")
   }
+
+; Names for custom extra flags. There can be up to 8 of these.
+; name          = rule name; In some circumstances user may see this
+;                 as part of some sentences, so try to make it descriptive
+;                 and sensible.
+; helptxt       = displayed in the help for extra types with this flag
+;                 (optional)
+;extra_flags =
+;  { "name", "helptxt"
+;  }
 
 [parameters]
 
@@ -35,6 +46,14 @@ ocean_reclaim_requirement = 30
 ; Percentage of "water" tiles required to be adjacent to a land tile before
 ; it may be "channeled" into a water tile (0-101; 0=anywhere, default 101=nowhere)
 land_channel_requirement = 10
+
+; Percentage of unfrozen tiles (no "Frozen" flag) required to be adjacent
+; to a frozen tile before it can thaw (0-101; 0=anywhere, default 101=nowhere)
+thaw_requirement = 0
+
+; Percentage of frozen tiles ("Frozen" flag) required to be adjacent to an
+; unfrozen tile before it can freeze (0-101; 0=anywhere, default 101=nowhere)
+freeze_requirement = 0
 
 ; Bodies of water up to this size are considered freshwater lakes, if there is
 ; also terrain type(s) with flag "FreshWater" in the ruleset.
@@ -157,10 +176,14 @@ ocean_resources = FALSE
 ;   - NoZoc            = Units on this terrain are not generating or subject
 ;                        to zoc
 ;   - NoFortify        = Units cannot fortify on this terrain
-;   - Frozen           = Frozen/polar terrain. Currently this just affects
-;                        how the terrain is shown on the overview map.
+;   - Frozen           = Frozen/polar terrain. For water tiles, Frozen terrain
+;                        is generated near poles. Conversion between frozen
+;                        and unfrozen terrain can be controlled with
+;                        thaw_requirement/freeze_requirement, and Frozen
+;                        terrain is shown differently on the overview map.
 ; property_*           = specific property % values used by mapgen.  Most
-;                        terrains will have 0 for most values.
+;                        terrains will have 0 for most values. Properties
+;                        other than ocean_depth are only used for land tiles.
 ;  - mountainous       = degree to which this terrain is mountainous
 ;  - green             = how much life this terrain has
 ;  - foliage           = how much thick undergrowth the terrain has 

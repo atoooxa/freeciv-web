@@ -874,7 +874,9 @@ function do_map_click(ptile, qtype, first_time_called)
 
   if (current_focus.length > 0 && current_focus[0]['tile'] == ptile['index']) {
     /* clicked on unit at the same tile, then deactivate goto and show context menu. */
-    deactivate_goto();
+    if (goto_active && !is_touch_device()) {
+      deactivate_goto();
+    }
     $("#canvas").contextMenu();
     return;
   }
@@ -942,6 +944,11 @@ function do_map_click(ptile, qtype, first_time_called)
           var pos;
 
           /* Append the order unless there are targets at the tile. */
+          /* FIXME: units and cities shouldn't always make actions be
+           * performed from the neighbor tile. */
+          /* FIXME: consider the minimum and maximum distance an action can
+           * be performed from. Needs Freeciv patch #7348 or hard coded
+           * values. */
           if (tile_city(ptile) == null
               && tile_units(ptile).length == 0) {
             /* Append the final order. */
@@ -1006,7 +1013,14 @@ function do_map_click(ptile, qtype, first_time_called)
 
   } else if (paradrop_active && current_focus.length > 0) {
     punit = current_focus[0];
-    packet = {"pid" : packet_unit_paradrop_to, "unit_id" : punit['id'], "tile": ptile['index'] };
+    packet = {
+      "pid"         : packet_unit_do_action,
+      "actor_id"    : punit['id'],
+      "target_id"   : ptile['index'],
+      "value"       : 0,
+      "name"        : "",
+      "action_type" : ACTION_PARADROP
+    };
     send_request(JSON.stringify(packet));
     paradrop_active = false;
 
@@ -1014,7 +1028,14 @@ function do_map_click(ptile, qtype, first_time_called)
     punit = current_focus[0];
     pcity = tile_city(ptile);
     if (pcity != null) {
-      packet = {"pid" : packet_unit_airlift, "unit_id" : punit['id'], "city_id": pcity['id'] };
+      packet = {
+        "pid"         : packet_unit_do_action,
+        "actor_id"    : punit['id'],
+        "target_id"   : pcity['id'],
+        "value"       : 0,
+        "name"        : "",
+        "action_type" : ACTION_AIRLIFT
+      };
       send_request(JSON.stringify(packet));
     }
     airlift_active = false;
