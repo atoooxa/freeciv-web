@@ -1,14 +1,17 @@
 /* javascript for metaserver page. */
 $(document).ready(function() {
+  var button = $( ".button");
+  var tabs = $( "#tabs" );
 
-	$( ".button").button();
-	$( ".button").css("font-size", "13px");
-	$(".button").css("margin", "7px");
-	if (window.location.href.indexOf("tab") != -1) {
-		$( "#tabs" ).tabs({ active: 1 });
-	 } else { 
-		$( "#tabs" ).tabs();
-	}
+  button.button();
+  button.css("font-size", "13px");
+  button.css("margin", "7px");
+
+  if (window.location.href.indexOf("tab") != -1) {
+    tabs.tabs({ active: 1 });
+  } else {
+    tabs.tabs();
+  }
 
   $.ajax({
     url: "/mailstatus",
@@ -34,14 +37,17 @@ $(document).ready(function() {
 /****************************************************************************
   Updates metaserver with information about running games
 ****************************************************************************/
-function handle_pbem(data)
-{
+function handle_pbem(data) {
   if (data.indexOf("[[") != -1) {
     var gamestats_txt = data.substring(data.indexOf("[["), data.indexOf("]]") + 2);
     var gamestats = jQuery.parseJSON(gamestats_txt);
-    $("#pbemplr").html($("#pbemplr").html()+" ("+gamestats.length+")");
-    for (var i = 0; i < gamestats.length; i++) {
-      var game = gamestats[gamestats.length-i-1];
+    var gamestatsLength = gamestats.length;
+    var pbemplr = $("#pbemplr");
+
+    pbemplr.html(pbemplr.html() + " (" + gamestatsLength + ")");
+
+    for (var i = 0; i < gamestatsLength; i++) {
+      var game = gamestats[gamestatsLength - i - 1];
       var turn = game[0];
       var phase = game[1];
       var player_one = game[2][0];

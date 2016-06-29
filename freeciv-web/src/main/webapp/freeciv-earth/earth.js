@@ -43,7 +43,7 @@ function doImage(err, canvas) {
   mycanvas.width = dimensions.x;
   mycanvas.height = dimensions.y;
   var ctx = mycanvas.getContext("2d");
-  ctx.drawImage(canvas, 0, 0, dimensions.x, dimensions.y, 0,0, width, height);
+  ctx.drawImage(canvas, 0, 0, dimensions.x, dimensions.y, 0, 0, width, height);
 
   var savetxt = process_image(ctx);
 
@@ -53,25 +53,24 @@ $.ajax({
   url: "/freeciv-earth-mapgen",
   data: savetxt 
 }).done(function(responsedata) {
-    window.location.href="/webclient/?action=earthload&savegame=" + responsedata;
+    window.location.href = "/webclient/?action=earthload&savegame=" + responsedata;
   })
   .fail(function() {
     $("#snap_status").html("Something failed. Please try again later!");
-  })
-
+  });
 }
 
-function pixel_color(colorRed,colorGreen,colorBlue,pixel, threshold)
-{
-    var diffR,diffG,diffB;
-    diffR=(colorRed - pixel[0]);
-    diffG=(colorGreen - pixel[1]);
-    diffB=(colorBlue - pixel[2]);
-    return (Math.sqrt(diffR*diffR + diffG*diffG + diffB*diffB) < threshold);
+function pixel_color(colorRed, colorGreen, colorBlue, pixel, threshold) {
+    var diffR, diffG, diffB;
+
+    diffR = colorRed - pixel[0];
+    diffG = colorGreen - pixel[1];
+    diffB = colorBlue - pixel[2];
+
+    return Math.sqrt(diffR * diffR + diffG * diffG + diffB * diffB) < threshold;
 }
 
-function get_map_terrain_type(x, y, pixel) 
-{
+function get_map_terrain_type(x, y, pixel) {
   var lat_1 = map.getBounds().getNorthEast().lat;
   var lat_2 = map.getBounds().getSouthWest().lat;
 
@@ -104,18 +103,17 @@ function get_map_terrain_type(x, y, pixel)
 
 }
 
-function zeroFill( number, width )
-{
+function zeroFill( number, width ) {
   width -= number.toString().length;
-  if ( width > 0 )
-  {
+    
+  if ( width > 0 ) {
     return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
   }
+    
   return number + ""; // always return a string
 }
 
-function process_image(ctx)
-{
+function process_image(ctx) {
  var mapline = "";
  /* process image pixels which are drawn on the canvas.*/
   for (var y = 0; y < height; y++) {
@@ -127,8 +125,8 @@ function process_image(ctx)
     mapline += '"\n';
   }
   console.log(mapline)
+    
   return mapline;
-
 }
 
 
